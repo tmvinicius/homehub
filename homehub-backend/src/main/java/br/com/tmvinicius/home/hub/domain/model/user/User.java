@@ -47,6 +47,10 @@ public class User {
         return active;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
     public void setActive(Boolean active) {
         if(role != UserRole.ADMIN){
             throw new InvalidUserException("Usuario não tem permissão!");

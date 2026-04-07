@@ -1,0 +1,9 @@
+spring.application.name: home.hub
+h2:
+  console:
+    enabled: true
+
+jwt:
+  #mantendo como teste
+  secret: my-SecretKey-test
+  expiration: 86400000
