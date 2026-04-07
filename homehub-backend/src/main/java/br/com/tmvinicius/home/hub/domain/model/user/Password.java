@@ -29,7 +29,7 @@ public class Password {
         final String PASSWORD_PATTERN =
                 "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\\\d)(?=.*[@#$%^&+=!]).{6,15}$";
 
-        if(password.matches(PASSWORD_PATTERN)){
+        if(!password.matches(PASSWORD_PATTERN)){
             throw new InvalidPasswordException("Senha inválida!");
         }
     }
