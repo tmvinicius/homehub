@@ -1,0 +1,73 @@
+name: PR Validation Pipeline
+
+on:
+  pull_request:
+    branches: [ "main", "develop" ]
+
+concurrency:
+  group: pr-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build-test-analyze:
+    name: Build, Test, Quality & Security
+    runs-on: ubuntu-latest
+
+    steps:
+      # 📥 Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ☕ Setup Java 21
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: maven
+
+      # ⚡ Cache adicional (melhora performance)
+      - name: Cache Maven packages
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-m2
+
+      # 🔧 Build + testes + coverage
+      - name: Build and run tests
+        run: mvn -B clean verify
+
+      # 📊 Publicar relatório de coverage (JaCoCo)
+      - name: Upload JaCoCo Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
+
+      # 📏 Checkstyle (qualidade de código)
+      - name: Run Checkstyle
+        run: mvn checkstyle:check
+
+      # 🐞 SpotBugs (análise estática)
+      - name: Run SpotBugs
+        run: mvn com.github.spotbugs:spotbugs-maven-plugin:check
+
+      # 🔐 OWASP Dependency Check (vulnerabilidades)
+      - name: Run OWASP Dependency Check
+        run: mvn org.owasp:dependency-check-maven:check
+
+      # 📦 Upload relatório de vulnerabilidades
+      - name: Upload OWASP Report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: owasp-report
+          path: target/dependency-check-report.html
+
+      # ❗ Fail explícito se algo crítico acontecer
+      - name: Fail if reports missing (sanity check)
+        run: |
+          test -f target/dependency-check-report.html
