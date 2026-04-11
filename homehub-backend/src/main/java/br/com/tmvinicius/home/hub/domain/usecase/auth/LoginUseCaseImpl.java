@@ -26,6 +26,6 @@ public class LoginUseCaseImpl implements LoginUseCase {
         user.validateUser();
 
         String token = tokenProvider.generate(user);
-       return token;
+        return token;
     }
 }
