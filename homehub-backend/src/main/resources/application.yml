@@ -1,0 +1,15 @@
+spring.application.name: home.hub
+h2:
+  console:
+    enabled: true
+
+jwt:
+  #mantendo como teste
+  secret: my-SecretKey-master-secret-test
+  expiration: 86400000
+
+security:
+  password:
+    bcrypt:
+      # 12 para producao, 8 para testes
+      strength: 8
