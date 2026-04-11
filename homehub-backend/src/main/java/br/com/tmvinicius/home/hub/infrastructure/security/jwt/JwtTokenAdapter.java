@@ -6,27 +6,28 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
-
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.Date;
 
 public class JwtTokenAdapter implements TokenProvider {
 
-    @Value("${jwt.secret}")
-    String SECRET_KEY;
-    @Value("${jwt.expiration}")
-    long EXPIRATION_TIME;
+    private final String secret;
+    private final long expiration;
+
+    public JwtTokenAdapter(JwtProperties properties){
+        this.secret = properties.secret();
+        this.expiration = properties.expiration();
+    }
+
 
     @Override
     public String generate(User user) {
 
         final Date expirationDate = new Date((new Date())
-                .getTime() + EXPIRATION_TIME);
+                .getTime() + expiration);
 
-        SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        SecretKey key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
         String token = Jwts.builder()
                 .setSubject(user.getEmail().toString())
