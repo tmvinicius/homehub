@@ -1,4 +1,4 @@
-package br.com.tmvinicius.home.hub.infrastructure.persistence;
+package br.com.tmvinicius.home.hub.infrastructure.persistence.repository;
 
 import br.com.tmvinicius.home.hub.infrastructure.persistence.user.UserPersistence;
 import org.springframework.data.repository.CrudRepository;
