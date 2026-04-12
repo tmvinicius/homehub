@@ -3,7 +3,7 @@
     import br.com.tmvinicius.home.hub.domain.model.user.Email;
     import br.com.tmvinicius.home.hub.domain.model.user.User;
     import br.com.tmvinicius.home.hub.domain.port.out.user.UserRepository;
-    import br.com.tmvinicius.home.hub.infrastructure.persistence.UserJpaRepository;
+    import br.com.tmvinicius.home.hub.infrastructure.persistence.repository.UserJpaRepository;
     import br.com.tmvinicius.home.hub.infrastructure.persistence.user.mapper.UserPersistenceMapper;
 
     import java.util.Optional;
