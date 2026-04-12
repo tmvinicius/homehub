@@ -16,7 +16,7 @@ public class Email {
         this.email = email;
     }
 
-    public String getEmail(){
+    public String getValue(){
         return this.email;
     }
 
