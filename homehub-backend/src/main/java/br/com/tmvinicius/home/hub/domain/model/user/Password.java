@@ -17,7 +17,7 @@ public class Password {
         this.password = password;
     }
 
-    public Password of(String rawPassword){
+    public static Password of(String rawPassword){
         validatePassword(rawPassword);
         return new Password(rawPassword);
     }
@@ -39,7 +39,7 @@ public class Password {
         this.password = password;
     }
 
-    public void validatePassword(String password){
+    public static void validatePassword(String password){
 
         final String PASSWORD_PATTERN =
                 "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\\\d)(?=.*[@#$%^&+=!]).{6,15}$";
