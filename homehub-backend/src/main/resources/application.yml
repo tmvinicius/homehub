@@ -4,7 +4,7 @@ h2:
 
 jwt:
   #mantendo como teste
-  secret: my-SecretKey-master-secret-test
+  secret: my-Secret-Key-master-secret-test-hmac-12345
   expiration: 86400000
 
 security:
@@ -17,7 +17,7 @@ spring:
   application:
     name: home.hub
   datasource:
-    url: jdbc:h2:mem:homehub-db
+    url: jdbc:h2:file:./data/homehub-db
     driver-class-name: org.h2.Driver
     username: sa
     password:

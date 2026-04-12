@@ -42,7 +42,7 @@ public class Password {
     public static void validatePassword(String password){
 
         final String PASSWORD_PATTERN =
-                "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\\\d)(?=.*[@#$%^&+=!]).{6,15}$";
+                "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{6,15}$";
 
         if(!password.matches(PASSWORD_PATTERN)){
             throw new InvalidPasswordException("Senha inválida!");
