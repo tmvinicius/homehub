@@ -10,10 +10,25 @@ public class Password {
     private String password;
 
 
-    public Password(String password){
+    public Password(){}
+
+    public Password(String password) {
         validatePassword(password);
         this.password = password;
     }
+
+    public Password of(String rawPassword){
+        validatePassword(rawPassword);
+        return new Password(rawPassword);
+    }
+
+    public static Password fromHash(String hash) {
+        Password password = new Password();
+        password.password = hash;
+        return password;
+    }
+
+
 
     public String getValue(){
         return this.password;
@@ -48,8 +63,6 @@ public class Password {
 
     @Override
     public String toString() {
-        return "Password{" +
-                "password='" + password + '\'' +
-                '}';
+        return "Password{***}";
     }
 }

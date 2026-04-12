@@ -9,20 +9,27 @@ import br.com.tmvinicius.home.hub.domain.port.out.auth.PasswordEncoder;
 import br.com.tmvinicius.home.hub.domain.port.out.auth.TokenProvider;
 import br.com.tmvinicius.home.hub.domain.port.out.user.UserRepository;
 
+import java.util.Optional;
+
 public class LoginUseCaseImpl implements LoginUseCase {
 
-    UserRepository userRepository;
-    TokenProvider tokenProvider;
-    PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final TokenProvider tokenProvider;
+    private final PasswordEncoder passwordEncoder;
+
+    public LoginUseCaseImpl(UserRepository userRepository, TokenProvider tokenProvider, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.tokenProvider = tokenProvider;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @Override
     public String userLogin(Email email, Password password) {
 
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email)
+                .filter(userVerify -> passwordEncoder.verify(password, userVerify.getPassword()))
+                .orElseThrow(() -> new InvalidUserLoginException("Credenciais inválidas!"));
 
-        if(user == null || !passwordEncoder.verify(password, user.getPassword())){
-            throw new InvalidUserLoginException("Credenciais inválidas!");
-        }
         user.validateUser();
 
         String token = tokenProvider.generate(user);

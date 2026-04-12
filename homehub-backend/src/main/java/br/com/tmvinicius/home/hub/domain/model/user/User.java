@@ -16,11 +16,20 @@ public class User {
     private UserRole role;
     private Boolean active;
 
-    public User(UUID id, Email email, Password password){
+    public User(UUID id, Email email, Password password, UserRole role, Boolean active){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.active = active;
+    }
+    public User(UUID id, Email email, Password password) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.createdAt = LocalDateTime.now();
+        this.role = UserRole.ADMIN;
+        this.active = Boolean.TRUE;
     }
 
     public UUID getId(){
