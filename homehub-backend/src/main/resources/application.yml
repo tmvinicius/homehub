@@ -17,7 +17,7 @@ spring:
   application:
     name: home.hub
   datasource:
-    url: jdbc:h2:file:./data/homehub-db
+    url: jdbc:h2:mem:homehub
     driver-class-name: org.h2.Driver
     username: sa
     password:
@@ -38,3 +38,22 @@ spring:
 
 server:
   port: 8080
+
+services:
+  backend:
+    labels:
+      - "traefik.enable=true"
+
+  jellyfin:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=PathPrefix(`/jellyfin`)"
+      - "traefik.http.routers.jellyfin.middlewares=auth"
+
+  traefik:
+    command:
+      - "--providers.docker=true"
+
+    labels:
+      - "traefik.http.middlewares.auth.forwardauth.address=http://backend:8080/api/auth/verify"
+      - "traefik.http.middlewares.auth.forwardauth.authRequestHeaders=Authorization"
