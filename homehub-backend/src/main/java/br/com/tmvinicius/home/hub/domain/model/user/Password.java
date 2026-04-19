@@ -1,7 +1,7 @@
 package br.com.tmvinicius.home.hub.domain.model.user;
 
 
-import br.com.tmvinicius.home.hub.domain.exception.InvalidPasswordException;
+import br.com.tmvinicius.home.hub.domain.exception.user.InvalidPasswordException;
 
 import java.util.Objects;
 
@@ -45,7 +45,7 @@ public class Password {
                 "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{6,15}$";
 
         if(!password.matches(PASSWORD_PATTERN)){
-            throw new InvalidPasswordException("Senha inválida!");
+            throw new InvalidPasswordException("Senha invalida!");
         }
     }
 
