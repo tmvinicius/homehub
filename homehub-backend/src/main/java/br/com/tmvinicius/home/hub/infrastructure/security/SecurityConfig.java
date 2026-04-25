@@ -2,6 +2,7 @@ package br.com.tmvinicius.home.hub.infrastructure.security;
 
 import br.com.tmvinicius.home.hub.domain.port.out.auth.PasswordEncoder;
 import br.com.tmvinicius.home.hub.domain.port.out.auth.TokenProvider;
+import br.com.tmvinicius.home.hub.infrastructure.security.filter.JwtFilter;
 import br.com.tmvinicius.home.hub.infrastructure.security.jwt.JwtProperties;
 import br.com.tmvinicius.home.hub.infrastructure.security.jwt.JwtTokenAdapter;
 import br.com.tmvinicius.home.hub.infrastructure.security.password.BCryptPasswordAdapter;
@@ -10,6 +11,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.filter.OncePerRequestFilter;
 
 @Configuration
 @EnableConfigurationProperties({JwtProperties.class, BCryptProperties.class})
@@ -28,6 +30,11 @@ public class SecurityConfig {
     @Bean
     public PasswordEncoder passwordEncoder(BCryptPasswordEncoder encoder){
         return new BCryptPasswordAdapter(encoder);
+    }
+
+    @Bean
+    public OncePerRequestFilter oncePerRequestFilter(TokenProvider tokenProvider){
+        return  new JwtFilter(tokenProvider);
     }
 
 
