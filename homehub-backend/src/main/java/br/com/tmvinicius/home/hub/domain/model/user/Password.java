@@ -1,7 +1,7 @@
 package br.com.tmvinicius.home.hub.domain.model.user;
 
 
-import br.com.tmvinicius.home.hub.domain.exception.InvalidPasswordException;
+import br.com.tmvinicius.home.hub.domain.exception.user.InvalidPasswordException;
 
 import java.util.Objects;
 
@@ -10,12 +10,27 @@ public class Password {
     private String password;
 
 
-    public Password(String password){
+    public Password(){}
+
+    public Password(String password) {
         validatePassword(password);
         this.password = password;
     }
 
-    public String getPassword(){
+    public static Password of(String rawPassword){
+        validatePassword(rawPassword);
+        return new Password(rawPassword);
+    }
+
+    public static Password fromHash(String hash) {
+        Password password = new Password();
+        password.password = hash;
+        return password;
+    }
+
+
+
+    public String getValue(){
         return this.password;
     }
 
@@ -24,13 +39,13 @@ public class Password {
         this.password = password;
     }
 
-    public void validatePassword(String password){
+    public static void validatePassword(String password){
 
         final String PASSWORD_PATTERN =
-                "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\\\d)(?=.*[@#$%^&+=!]).{6,15}$";
+                "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d)(?=.*[@#$%^&+=!]).{6,15}$";
 
         if(!password.matches(PASSWORD_PATTERN)){
-            throw new InvalidPasswordException("Senha inválida!");
+            throw new InvalidPasswordException("Senha invalida!");
         }
     }
 
@@ -48,8 +63,6 @@ public class Password {
 
     @Override
     public String toString() {
-        return "Password{" +
-                "password='" + password + '\'' +
-                '}';
+        return "Password{***}";
     }
 }

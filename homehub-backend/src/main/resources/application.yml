@@ -1,0 +1,59 @@
+h2:
+  console:
+    enabled: true
+
+jwt:
+  #mantendo como teste
+  secret: my-Secret-Key-master-secret-test-hmac-12345
+  expiration: 86400000
+
+security:
+  password:
+    bcrypt:
+      # 12 para producao, 8 para testes
+      strength: 8
+
+spring:
+  application:
+    name: home.hub
+  datasource:
+    url: jdbc:h2:mem:homehub
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
+services:
+  backend:
+    labels:
+      - "traefik.enable=true"
+
+  jellyfin:
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.jellyfin.rule=PathPrefix(`/jellyfin`)"
+      - "traefik.http.routers.jellyfin.middlewares=auth"
+
+  traefik:
+    command:
+      - "--providers.docker=true"
+
+    labels:
+      - "traefik.http.middlewares.auth.forwardauth.address=http://backend:8080/api/auth/verify"
+      - "traefik.http.middlewares.auth.forwardauth.authRequestHeaders=Authorization"

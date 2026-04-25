@@ -1,7 +1,7 @@
 package br.com.tmvinicius.home.hub.domain.model.user;
 
 
-import br.com.tmvinicius.home.hub.domain.exception.InvalidUserException;
+import br.com.tmvinicius.home.hub.domain.exception.user.InvalidUserException;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -16,11 +16,20 @@ public class User {
     private UserRole role;
     private Boolean active;
 
-    public User(UUID id, Email email, Password password){
+    public User(UUID id, Email email, Password password, UserRole role, Boolean active){
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.role = role;
+        this.active = active;
+    }
+    public User(UUID id, Email email, Password password) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.createdAt = LocalDateTime.now();
+        this.role = UserRole.ADMIN;
+        this.active = Boolean.TRUE;
     }
 
     public UUID getId(){
@@ -47,16 +56,20 @@ public class User {
         return active;
     }
 
+    public UserRole getRole() {
+        return role;
+    }
+
     public void setActive(Boolean active) {
         if(role != UserRole.ADMIN){
-            throw new InvalidUserException("Usuario não tem permissão!");
+            throw new InvalidUserException("Usuario não tem permissao!");
         }
         this.active = active;
     }
 
     public void validateUser(){
         if(!active) {
-            throw new InvalidUserException("Usuario não está ativo!");
+            throw new InvalidUserException("Usuario nao está ativo!");
         }
     }
 

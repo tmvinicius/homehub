@@ -1,6 +1,6 @@
 package br.com.tmvinicius.home.hub.domain.model.user;
 
-import br.com.tmvinicius.home.hub.domain.exception.InvalidEmailException;
+import br.com.tmvinicius.home.hub.domain.exception.user.InvalidEmailException;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ public class Email {
         this.email = email;
     }
 
-    public String getEmail(){
+    public String getValue(){
         return this.email;
     }
 
@@ -31,7 +31,7 @@ public class Email {
                 + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
         if (!email.matches(EMAIL_PATTERN)){
-            throw new InvalidEmailException("O email inserido é inválido!");
+            throw new InvalidEmailException("O email inserido é invalido!");
         };
     }
 
@@ -49,8 +49,6 @@ public class Email {
 
     @Override
     public String toString() {
-        return "Email{" +
-                "email='" + email + '\'' +
-                '}';
+        return email ;
     }
 }
