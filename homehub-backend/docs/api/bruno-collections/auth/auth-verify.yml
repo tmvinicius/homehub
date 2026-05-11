@@ -8,8 +8,7 @@ http:
   url: http://localhost:8080/api/auth/verify
   headers:
     - name: Authorization
-      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBob21laHViLmNvbSIsImlkIjoiZGVmNWUyOGItNzY5Mi00YmZiLWE2MWEtYjBhMjcwYmE3NTkxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzc2NjI1MDAzLCJleHAiOjE3NzY3MTE0MDN9.ugFJ_C0IDupQJD7sF_esc9jXyh1VyG4HqohiERFUKV0
-      disabled: true
+      value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBob21laHViLmNvbSIsImlkIjoiZGVmNWUyOGItNzY5Mi00YmZiLWE2MWEtYjBhMjcwYmE3NTkxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzc4NTA1ODkxLCJleHAiOjE3Nzg1OTIyOTF9.uy65iQqdIx_e78ROJN8hvdOZxHBOmockq4v5AkidZCs
   auth: inherit
 
 settings:
