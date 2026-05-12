@@ -25,5 +25,4 @@ public class UseCaseConfig {
         return new VerifyTokenUseCaseImpl(tokenProvider);
     }
 
-
 }

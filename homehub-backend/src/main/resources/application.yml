@@ -1,7 +1,3 @@
-h2:
-  console:
-    enabled: true
-
 jwt:
   #mantendo como teste
   secret: my-Secret-Key-master-secret-test-hmac-12345
