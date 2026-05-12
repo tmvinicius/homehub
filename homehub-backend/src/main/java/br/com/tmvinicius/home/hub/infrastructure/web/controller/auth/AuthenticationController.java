@@ -19,7 +19,7 @@ import static br.com.tmvinicius.home.hub.infrastructure.security.jwt.BearerToken
 
 @RestController
 @RequestMapping("/api/auth")
-public class UserLoginController {
+public class AuthenticationController {
 
     private final LoginUseCase loginUseCase;
     private final AuthMapper authMapper;
@@ -27,10 +27,10 @@ public class UserLoginController {
     private final GetCurrentUserUseCase getCurrentUserUseCase;
 
 
-    public UserLoginController(LoginUseCase loginUseCase,
-                               AuthMapper authMapper,
-                               VerifyTokenUseCase verifyTokenUseCase,
-                               GetCurrentUserUseCase getCurrentUserUseCase){
+    public AuthenticationController(LoginUseCase loginUseCase,
+                                    AuthMapper authMapper,
+                                    VerifyTokenUseCase verifyTokenUseCase,
+                                    GetCurrentUserUseCase getCurrentUserUseCase){
         this.loginUseCase = loginUseCase;
         this.authMapper = authMapper;
         this.verifyTokenUseCase = verifyTokenUseCase;
