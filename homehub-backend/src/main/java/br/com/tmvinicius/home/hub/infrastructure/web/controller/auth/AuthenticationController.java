@@ -4,7 +4,6 @@ package br.com.tmvinicius.home.hub.infrastructure.web.controller.auth;
 import br.com.tmvinicius.home.hub.domain.model.auth.AuthenticatedUser;
 import br.com.tmvinicius.home.hub.domain.model.user.Email;
 import br.com.tmvinicius.home.hub.domain.model.user.Password;
-import br.com.tmvinicius.home.hub.domain.port.in.auth.GetCurrentUserUseCase;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.LoginUseCase;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.VerifyTokenUseCase;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.request.user.UserLoginRequest;
@@ -12,6 +11,7 @@ import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.user.MeRespons
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.user.UserLoginResponse;
 import br.com.tmvinicius.home.hub.infrastructure.web.mapper.AuthMapper;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -24,17 +24,15 @@ public class AuthenticationController {
     private final LoginUseCase loginUseCase;
     private final AuthMapper authMapper;
     private final VerifyTokenUseCase verifyTokenUseCase;
-    private final GetCurrentUserUseCase getCurrentUserUseCase;
 
 
     public AuthenticationController(LoginUseCase loginUseCase,
                                     AuthMapper authMapper,
-                                    VerifyTokenUseCase verifyTokenUseCase,
-                                    GetCurrentUserUseCase getCurrentUserUseCase){
+                                    VerifyTokenUseCase verifyTokenUseCase
+                                    ){
         this.loginUseCase = loginUseCase;
         this.authMapper = authMapper;
         this.verifyTokenUseCase = verifyTokenUseCase;
-        this.getCurrentUserUseCase = getCurrentUserUseCase;
     }
 
     @PostMapping("/login")
@@ -60,12 +58,13 @@ public class AuthenticationController {
     }
 
     @GetMapping("/me")
-    public ResponseEntity<MeResponse> userMe(@RequestHeader(value = "Authorization", required = false) String authHeader){
+    public ResponseEntity<MeResponse> userMe(@AuthenticationPrincipal AuthenticatedUser user){
 
-        String token = extractBearerToken(authHeader);
-        AuthenticatedUser user = getCurrentUserUseCase.getCurrentUser(token);
-
-        MeResponse response = new MeResponse(user.getUserId(),user.getEmail().getValue(), user.getRole().name());
+        MeResponse response = new MeResponse(
+                user.getUserId(),
+                user.getEmail().getValue(),
+                user.getRole().name()
+        );
 
         return ResponseEntity.ok(response);
 
