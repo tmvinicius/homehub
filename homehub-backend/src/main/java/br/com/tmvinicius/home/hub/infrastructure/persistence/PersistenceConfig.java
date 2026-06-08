@@ -14,7 +14,6 @@ public class PersistenceConfig {
     @Bean
     public UserRepository userRepository(UserJpaRepository userJpaRepository,
                                          UserPersistenceMapper userPersistenceMapper){
-
         return new UserPersistenceAdapter(userJpaRepository,userPersistenceMapper);
     }
 

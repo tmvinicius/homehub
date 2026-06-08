@@ -1,7 +1,10 @@
 jwt:
   #mantendo como teste
   secret: my-Secret-Key-master-secret-test-hmac-12345
-  expiration: 86400000
+  expiration: 86400000 #24hours
+
+refresh-token:
+  expiration: 604800000 #7 days
 
 security:
   password:

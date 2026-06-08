@@ -7,6 +7,7 @@
     import br.com.tmvinicius.home.hub.infrastructure.persistence.user.mapper.UserPersistenceMapper;
 
     import java.util.Optional;
+    import java.util.UUID;
 
     public class UserPersistenceAdapter implements UserRepository {
 
@@ -20,7 +21,14 @@
 
         @Override
         public Optional<User> findByEmail(Email email) {
+
             return Optional.ofNullable(userJpaRepository.findByEmail(email.getValue()))
+                    .map(userPersistenceMapper::entityToDomain);
+        }
+
+        @Override
+        public Optional<User> findById(UUID id) {
+            return Optional.of(userJpaRepository.findById(id).get())
                     .map(userPersistenceMapper::entityToDomain);
         }
     }

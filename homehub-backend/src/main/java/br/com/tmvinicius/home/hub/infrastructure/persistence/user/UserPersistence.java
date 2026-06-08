@@ -1,8 +1,6 @@
 package br.com.tmvinicius.home.hub.infrastructure.persistence.user;
 
 
-import br.com.tmvinicius.home.hub.domain.model.user.Email;
-import br.com.tmvinicius.home.hub.domain.model.user.Password;
 import br.com.tmvinicius.home.hub.domain.model.user.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
