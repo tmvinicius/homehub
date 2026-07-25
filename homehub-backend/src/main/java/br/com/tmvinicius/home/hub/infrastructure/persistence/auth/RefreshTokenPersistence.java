@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.util.UUID;
 
 @Entity
-@Table(name = "tokens")
+@Table(name = "refresh_tokens")
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,22 +17,20 @@ public class RefreshTokenPersistence {
 
 
     @Id
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private UUID id;
 
-    @OneToOne
-    @Column(unique = true, nullable = false)
-    @JoinColumn(name = "users", referencedColumnName = "id")
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
 
     @Column(nullable = false, unique = true)
     private String token;
 
-    @Column(nullable = false)
+    @Column(name = "expires_at", nullable = false)
     private Instant expiresAt;
 
     @Column(nullable = false)
-    private Boolean revoked;
+    private boolean revoked;
 
 
 }
