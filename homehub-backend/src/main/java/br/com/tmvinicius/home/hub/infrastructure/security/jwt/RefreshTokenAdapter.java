@@ -1,37 +1,39 @@
 package br.com.tmvinicius.home.hub.infrastructure.security.jwt;
 
 import br.com.tmvinicius.home.hub.domain.model.auth.RefreshToken;
-import br.com.tmvinicius.home.hub.domain.model.user.User;
-import br.com.tmvinicius.home.hub.domain.port.in.auth.RefreshTokenUseCase;
-import br.com.tmvinicius.home.hub.domain.port.out.auth.RefreshTokenProvider;
-import br.com.tmvinicius.home.hub.domain.port.out.user.UserRepository;
-import br.com.tmvinicius.home.hub.infrastructure.persistence.auth.RefreshTokenPersistence;
-import br.com.tmvinicius.home.hub.infrastructure.persistence.repository.RefreshTokenRepository;
-
-import java.util.Optional;
+import br.com.tmvinicius.home.hub.domain.port.out.auth.RefreshTokenGenerator;
+import java.security.SecureRandom;
+import java.time.Instant;
+import java.util.Base64;
 import java.util.UUID;
 
-public class RefreshTokenAdapter implements RefreshTokenProvider {
+public class RefreshTokenAdapter implements RefreshTokenGenerator {
+
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     private final long expiration;
-    private final RefreshTokenUseCase refreshTokenUseCase;
-    private final RefreshTokenRepository refreshTokenRepository;
-    private final UserRepository userRepository;
 
-    public RefreshTokenAdapter(RefreshTokenProperties tokenProperties, RefreshTokenUseCase tokenUseCase, RefreshTokenRepository tokenRepository, UserRepository userRepository){
-        this.expiration = tokenProperties.expiration();
-        this.refreshTokenRepository = tokenRepository;
-        this.refreshTokenUseCase = tokenUseCase;
-        this.userRepository = userRepository;
+    public RefreshTokenAdapter(RefreshTokenProperties properties) {
+        this.expiration = properties.expiration();
     }
-
 
     @Override
     public RefreshToken generate(UUID userId) {
+        return new RefreshToken(
+                UUID.randomUUID(),
+                userId,
+                generateTokenValue(),
+                Instant.now().plusMillis(expiration),
+                false
+        );
+    }
 
-        Optional<User> tokenPersistence = userRepository.findById(userId);
+    private String generateTokenValue() {
+        byte[] bytes = new byte[32];
+        SECURE_RANDOM.nextBytes(bytes);
 
-
-        return null;
+        return Base64.getUrlEncoder()
+                .withoutPadding()
+                .encodeToString(bytes);
     }
 }
