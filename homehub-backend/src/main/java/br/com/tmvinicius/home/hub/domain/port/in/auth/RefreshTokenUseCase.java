@@ -8,6 +8,4 @@ public interface RefreshTokenUseCase {
 
     RefreshToken createRefreshToken(UUID userId);
 
-    boolean isTokenExpired(RefreshToken token);
-
 }

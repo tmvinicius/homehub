@@ -36,12 +36,20 @@ public class RefreshToken {
         return expiresAt;
     }
 
-    public Boolean getRevoked() {
-        return revoked;
+    public boolean isExpired() {
+        return expiresAt.isBefore(Instant.now());
     }
 
     public void setRevoked(Boolean revoked) {
         this.revoked = revoked;
+    }
+
+    public boolean isRevoked() {
+        return revoked;
+    }
+
+    public boolean isValid() {
+        return !isExpired() && !isRevoked();
     }
 
 }
