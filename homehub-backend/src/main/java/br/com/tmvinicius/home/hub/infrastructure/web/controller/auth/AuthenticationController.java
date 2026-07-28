@@ -2,9 +2,11 @@ package br.com.tmvinicius.home.hub.infrastructure.web.controller.auth;
 
 
 import br.com.tmvinicius.home.hub.domain.model.auth.AuthenticatedUser;
+import br.com.tmvinicius.home.hub.domain.model.auth.LoginResult;
 import br.com.tmvinicius.home.hub.domain.model.user.Email;
 import br.com.tmvinicius.home.hub.domain.model.user.Password;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.LoginUseCase;
+import br.com.tmvinicius.home.hub.domain.port.in.auth.RefreshTokenUseCase;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.VerifyTokenUseCase;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.request.user.UserLoginRequest;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.user.MeResponse;
@@ -26,10 +28,7 @@ public class AuthenticationController {
     private final VerifyTokenUseCase verifyTokenUseCase;
 
 
-    public AuthenticationController(LoginUseCase loginUseCase,
-                                    AuthMapper authMapper,
-                                    VerifyTokenUseCase verifyTokenUseCase
-                                    ){
+    public AuthenticationController(LoginUseCase loginUseCase, AuthMapper authMapper, VerifyTokenUseCase verifyTokenUseCase){
         this.loginUseCase = loginUseCase;
         this.authMapper = authMapper;
         this.verifyTokenUseCase = verifyTokenUseCase;
@@ -40,10 +39,11 @@ public class AuthenticationController {
 
         Email email = authMapper.toEmail(request);
         Password password = authMapper.toPassword(request);
+        LoginResult result = loginUseCase.userLogin(email, password);
 
-        String token = loginUseCase.userLogin(email, password);
+        UserLoginResponse response = new UserLoginResponse(result.accessToken(), result.refreshToken());
 
-        return ResponseEntity.ok(new UserLoginResponse(token));
+        return ResponseEntity.ok(response);
     }
 
 
