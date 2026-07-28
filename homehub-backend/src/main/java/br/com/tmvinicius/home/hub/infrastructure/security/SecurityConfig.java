@@ -33,7 +33,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OncePerRequestFilter oncePerRequestFilter(TokenProvider tokenProvider){
+    public JwtFilter jwtFilter(TokenProvider tokenProvider){
         return  new JwtFilter(tokenProvider);
     }
 
