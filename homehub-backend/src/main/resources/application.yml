@@ -16,7 +16,7 @@ spring:
   application:
     name: home.hub
   datasource:
-    url: jdbc:h2:file:./data/homehub-db
+    url: jdbc:h2:file:./homehub-backend/data/homehub-db
     driver-class-name: org.h2.Driver
     username: sa
     password:
