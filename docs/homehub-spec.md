@@ -866,16 +866,64 @@ O sistema está preparado para:
 - Autenticação centralizada
 - Validação externa de requests
 
+Responsável por retornar:
 **Fluxo esperado:**
 
 Client → Traefik → /verify → Backend
 
+## 🔄 Evolução do módulo de autenticação e integração com Spring Security
+
+### Implementação do endpoint:
+
+GET /api/auth/me
+
+retorna:
+
+- id
+- email
+- role
+
+do usuário autenticado.
+
+### Renomeação do controller
+
+O antigo: UserLoginController
+
+foi renomeado para: AuthenticationController
+
+## 🔐 Estado atual da autenticação
+
+O backend já possui:
+
+- autenticação JWT stateless
+- integração real com Spring Security
+- JwtFilter
+- SecurityContextHolder
+- RBAC funcional
+- principal autenticado tipado (AuthenticatedUser)
+- endpoint /api/auth/me
+- autorização baseada em roles
+- autenticação via @AuthenticationPrincipal
+
+## 🚀 Nível atual de maturidade do backend
+
+O projeto já saiu da fase “tutorial CRUD/JWT”.
+A autenticação agora possui estrutura próxima de aplicações reais, incluindo:
+
+- separação clara entre autenticação e autorização
+- autenticação centralizada via filtro
+- controllers desacoplados do JWT
+- integração nativa com Spring Security
+- arquitetura stateless
+- preparação para Forward Auth e expansão futura
+
 ## 🚧 Próximos Passos
 
-- Implementar filtro de segurança (Spring Security)
-- Introduzir autorização por roles (RBAC)
-- Criar handler global de exceções
-- Melhorar validação de headers
-- Integrar completamente com Traefik
+- Refresh Token
+- Logout + blacklist/revogação
+- persistência robusta
+- testes
+- observabilidade
+- hardening de segurança
 
 ---

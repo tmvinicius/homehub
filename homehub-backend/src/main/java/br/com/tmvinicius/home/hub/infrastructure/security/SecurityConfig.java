@@ -1,10 +1,14 @@
 package br.com.tmvinicius.home.hub.infrastructure.security;
 
 import br.com.tmvinicius.home.hub.domain.port.out.auth.PasswordEncoder;
+import br.com.tmvinicius.home.hub.domain.port.out.auth.RefreshTokenGenerator;
 import br.com.tmvinicius.home.hub.domain.port.out.auth.TokenProvider;
+import br.com.tmvinicius.home.hub.domain.port.out.user.UserRepository;
 import br.com.tmvinicius.home.hub.infrastructure.security.filter.JwtFilter;
 import br.com.tmvinicius.home.hub.infrastructure.security.jwt.JwtProperties;
 import br.com.tmvinicius.home.hub.infrastructure.security.jwt.JwtTokenAdapter;
+import br.com.tmvinicius.home.hub.infrastructure.security.jwt.RefreshTokenAdapter;
+import br.com.tmvinicius.home.hub.infrastructure.security.jwt.RefreshTokenProperties;
 import br.com.tmvinicius.home.hub.infrastructure.security.password.BCryptPasswordAdapter;
 import br.com.tmvinicius.home.hub.infrastructure.security.password.BCryptProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,8 +37,13 @@ public class SecurityConfig {
     }
 
     @Bean
-    public OncePerRequestFilter oncePerRequestFilter(TokenProvider tokenProvider){
+    public JwtFilter jwtFilter(TokenProvider tokenProvider){
         return  new JwtFilter(tokenProvider);
+    }
+
+    @Bean
+    public RefreshTokenGenerator refreshTokenGenerator(RefreshTokenProperties properties){
+        return new RefreshTokenAdapter(properties);
     }
 
 

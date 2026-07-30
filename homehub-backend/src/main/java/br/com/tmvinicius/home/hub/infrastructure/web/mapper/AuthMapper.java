@@ -17,8 +17,8 @@ public class AuthMapper {
         return Password.of(request.password());
     }
 
-    public UserLoginResponse userLoginResponse(String token){
-        return new UserLoginResponse(token);
+    public UserLoginResponse userLoginResponse(String accessToken, String refreshToken){
+        return new UserLoginResponse(accessToken, refreshToken);
     }
 
 }
