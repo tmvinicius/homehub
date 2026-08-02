@@ -6,6 +6,8 @@ import br.com.tmvinicius.home.hub.infrastructure.persistence.auth.RefreshTokenPe
 import br.com.tmvinicius.home.hub.infrastructure.persistence.auth.mapper.RefreshTokenPersistenceMapper;
 import br.com.tmvinicius.home.hub.infrastructure.persistence.repository.RefreshTokenJpaRepository;
 
+import java.util.Optional;
+
 public class RefreshTokenAdapter implements RefreshTokenRepository {
 
     private final RefreshTokenJpaRepository refreshTokenJpaRepository;
@@ -23,5 +25,12 @@ public class RefreshTokenAdapter implements RefreshTokenRepository {
         refreshTokenJpaRepository.save(tokenPersistence);
 
         return refreshTokenPersistenceMapper.entityToDomain(tokenPersistence);
+    }
+
+    @Override
+    public Optional<RefreshToken> findByToken(String token) {
+
+        return refreshTokenJpaRepository.findByToken(token)
+                .map(refreshTokenPersistenceMapper::entityToDomain);
     }
 }

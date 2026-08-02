@@ -28,8 +28,8 @@ public class UseCaseConfig {
     }
 
     @Bean
-    public RefreshTokenUseCase refreshTokenUseCase(RefreshTokenGenerator refreshTokenGenerator, RefreshTokenRepository refreshTokenRepository){
-        return new RefreshTokenUseCaseImpl(refreshTokenGenerator, refreshTokenRepository);
+    public RefreshTokenUseCase refreshTokenUseCase(RefreshTokenGenerator refreshTokenGenerator, RefreshTokenRepository refreshTokenRepository, UserRepository userRepository, TokenProvider tokenProvider){
+        return new RefreshTokenUseCaseImpl(refreshTokenGenerator, refreshTokenRepository, userRepository, tokenProvider);
     }
 
 }

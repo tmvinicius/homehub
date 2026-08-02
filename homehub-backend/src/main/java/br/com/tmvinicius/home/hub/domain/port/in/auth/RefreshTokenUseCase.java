@@ -8,4 +8,6 @@ public interface RefreshTokenUseCase {
 
     RefreshToken createRefreshToken(UUID userId);
 
+    String refreshAccessToken(String token);
+
 }
