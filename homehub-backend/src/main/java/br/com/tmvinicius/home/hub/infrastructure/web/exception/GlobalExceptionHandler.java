@@ -1,10 +1,10 @@
 package br.com.tmvinicius.home.hub.infrastructure.web.exception;
 
+import br.com.tmvinicius.home.hub.domain.exception.auth.InvalidRefreshTokenException;
+import br.com.tmvinicius.home.hub.domain.exception.auth.RefreshTokenExpiredException;
+import br.com.tmvinicius.home.hub.domain.exception.auth.RefreshTokenRevokedException;
 import br.com.tmvinicius.home.hub.domain.exception.auth.TokenInvalidException;
-import br.com.tmvinicius.home.hub.domain.exception.user.InvalidEmailException;
-import br.com.tmvinicius.home.hub.domain.exception.user.InvalidPasswordException;
-import br.com.tmvinicius.home.hub.domain.exception.user.InvalidUserException;
-import br.com.tmvinicius.home.hub.domain.exception.user.InvalidUserLoginException;
+import br.com.tmvinicius.home.hub.domain.exception.user.*;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +44,25 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         return buildResponse(ex, "USER_LOGIN_INVALID", HttpStatus.UNAUTHORIZED, request);
     }
 
+    @ExceptionHandler(RefreshTokenRevokedException.class)
+    public ResponseEntity<Object> handleRefreshTokenRevokedEx(RefreshTokenRevokedException ex, WebRequest request){
+        return buildResponse(ex, "REFRESH_TOKEN_INVALID", HttpStatus.UNAUTHORIZED, request);
+    }
+
+    @ExceptionHandler(InvalidRefreshTokenException.class)
+    public ResponseEntity<Object> handleInvalidRefreshTokenEx(InvalidRefreshTokenException ex, WebRequest request){
+        return buildResponse(ex, "REFRESH_TOKEN_INVALID", HttpStatus.UNAUTHORIZED, request);
+    }
+
+    @ExceptionHandler(RefreshTokenExpiredException.class)
+    public ResponseEntity<Object> handleTokenExpiredEx(RefreshTokenExpiredException ex, WebRequest request){
+        return buildResponse(ex, "REFRESH_TOKEN_INVALID", HttpStatus.UNAUTHORIZED, request);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Object> handleUserNotFoundEx(UserNotFoundException ex, WebRequest request){
+        return buildResponse(ex, "USER_NOT_FOUND", HttpStatus.NOT_FOUND, request);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleGenericEx(Exception ex, WebRequest request){
