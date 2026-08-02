@@ -8,7 +8,9 @@ import br.com.tmvinicius.home.hub.domain.model.user.Password;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.LoginUseCase;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.RefreshTokenUseCase;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.VerifyTokenUseCase;
+import br.com.tmvinicius.home.hub.infrastructure.web.dto.request.auth.RefreshAccessTokenRequest;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.request.user.UserLoginRequest;
+import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.auth.RefreshAccessTokenResponse;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.user.MeResponse;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.user.UserLoginResponse;
 import br.com.tmvinicius.home.hub.infrastructure.web.mapper.AuthMapper;
@@ -26,12 +28,14 @@ public class AuthenticationController {
     private final LoginUseCase loginUseCase;
     private final AuthMapper authMapper;
     private final VerifyTokenUseCase verifyTokenUseCase;
+    private final RefreshTokenUseCase refreshTokenUseCase;
 
 
-    public AuthenticationController(LoginUseCase loginUseCase, AuthMapper authMapper, VerifyTokenUseCase verifyTokenUseCase){
+    public AuthenticationController(LoginUseCase loginUseCase, AuthMapper authMapper, VerifyTokenUseCase verifyTokenUseCase, RefreshTokenUseCase refreshTokenUseCase){
         this.loginUseCase = loginUseCase;
         this.authMapper = authMapper;
         this.verifyTokenUseCase = verifyTokenUseCase;
+        this.refreshTokenUseCase = refreshTokenUseCase;
     }
 
     @PostMapping("/login")
@@ -45,7 +49,6 @@ public class AuthenticationController {
 
         return ResponseEntity.ok(response);
     }
-
 
     @GetMapping("/verify")
     public ResponseEntity<Void> userVerify(@RequestHeader(value = "Authorization", required = false) String authHeader ){
@@ -67,7 +70,14 @@ public class AuthenticationController {
         );
 
         return ResponseEntity.ok(response);
+    }
 
+    @PostMapping("/refresh")
+    public ResponseEntity<RefreshAccessTokenResponse> refreshAccessToken(@RequestBody RefreshAccessTokenRequest tokenRequest){
+
+        String newAccessToken = refreshTokenUseCase.refreshAccessToken(tokenRequest.token());
+
+        return ResponseEntity.ok(new RefreshAccessTokenResponse(newAccessToken));
     }
 
 }
