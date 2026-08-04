@@ -2,15 +2,15 @@
 
 > Documento vivo de referência técnica, arquitetura, estado atual e histórico de funcionalidades do HomeHub.
 
-| Campo | Valor |
-|---|---|
-| **Versão do documento** | 2.0.0 |
-| **Última atualização** | 2026-07-30 |
-| **Responsável** | vinicius-mascarenhas |
+| Campo | Valor                                    |
+|---|------------------------------------------|
+| **Versão do documento** | 2.1.0                                    |
+| **Última atualização** | 2026-08-04                               |
+| **Responsável** | vinicius-mascarenhas                     |
 | **Status do projeto** | V1 — Backend de autenticação em evolução |
-| **Linguagem do backend** | Java 21 |
-| **Linguagem do frontend** | TypeScript |
-| **Ambiente-alvo** | Raspberry Pi 4 / ARM64 |
+| **Linguagem do backend** | Java 21                                  |
+| **Linguagem do frontend** | TypeScript                               |
+| **Ambiente-alvo** | Raspberry Pi 4 / ARM64                   |
 
 ---
 
@@ -292,7 +292,7 @@ Responsável por montar a aplicação:
 | Refresh Token — geração segura | Implementado | Valor opaco com `SecureRandom` |
 | Refresh Token — persistência | Implementado | Port, adapter, mapper e JPA |
 | Refresh Token no login | Implementado | Retorna junto ao Access Token |
-| Endpoint `/api/auth/refresh` | Planejado | Renovação ainda não concluída |
+| Endpoint `/api/auth/refresh` | Implementado | Renovação ainda não concluída |
 | Logout e revogação | Planejado | Estratégia a definir |
 | Rotação de Refresh Token | Planejado | Recomendado para evolução |
 | 2FA com TOTP | Planejado | Fora do escopo atual |
@@ -399,25 +399,29 @@ Banco de dados
 }
 ```
 
-### 8.5 Fluxo futuro de renovação
+### 8.5 Fluxo de renovação do Access Token
 
-Endpoint planejado:
+O endpoint responsável pela renovação da sessão é:
 
 ```text
 POST /api/auth/refresh
 ```
 
-Fluxo esperado:
+Fluxo atual:
 
 1. Receber o Refresh Token.
-2. Localizar o token persistido.
+2. Buscar o token persistido pelo seu valor.
 3. Validar existência.
-4. Validar expiração.
-5. Validar revogação.
+4. Validar revogação.
+5. Validar expiração.
 6. Recuperar o usuário associado.
-7. Gerar novo Access Token.
-8. Avaliar rotação do Refresh Token.
-9. Retornar os novos valores.
+7. Validar o estado do usuário.
+8. Gerar um novo Access Token.
+9. Retornar o novo Access Token.
+
+Nesta versão o Refresh Token permanece válido durante todo o seu período de expiração.
+
+A rotação do Refresh Token permanece como evolução futura.
 
 ### 8.6 Integração com Spring Security
 
@@ -452,14 +456,14 @@ O endpoint `/api/auth/me` usa `@AuthenticationPrincipal`, evitando parsing manua
 
 ### 9.1 Autenticação
 
-| Método | Endpoint | Status | Autenticação | Descrição |
-|---|---|---|---|---|
+| Método | Endpoint | Status       | Autenticação | Descrição |
+|---|---|--------------|---|---|
 | POST | `/api/auth/login` | Implementado | Pública | Autentica e retorna Access + Refresh Token |
 | GET | `/api/auth/verify` | Implementado | Bearer Token | Valida o token atual |
 | GET | `/api/auth/me` | Implementado | Bearer Token | Retorna o usuário autenticado |
-| POST | `/api/auth/refresh` | Planejado | Refresh Token | Renova o Access Token |
-| POST | `/api/auth/logout` | Planejado | Autenticada | Revoga a sessão |
-| POST | `/api/auth/verify-2fa` | Planejado | Temporária | Valida TOTP |
+| POST | `/api/auth/refresh` | Implementado | Refresh Token | Renova o Access Token |
+| POST | `/api/auth/logout` | Planejado    | Autenticada | Revoga a sessão |
+| POST | `/api/auth/verify-2fa` | Planejado    | Temporária | Valida TOTP |
 
 ### 9.2 Usuários
 
@@ -585,6 +589,8 @@ Não deve existir unicidade obrigatória em `user_id`.
 - Usuário autenticado recuperado do `SecurityContext`.
 - Credenciais inválidas não devem revelar se o e-mail existe.
 - Segredos e chaves não devem ser versionados.
+- Refresh Tokens são validados antes da emissão de novo Access Token.
+- Apenas Refresh Tokens persistidos e válidos podem renovar sessões.
 
 ### 12.2 Melhorias planejadas
 
@@ -677,6 +683,19 @@ O caso de uso retorna um resultado da camada de domínio/aplicação. O controll
 
 Um usuário pode possuir vários Refresh Tokens válidos, permitindo múltiplos dispositivos e navegadores.
 
+
+### ADR-008 — Refresh Token reutilizável
+
+**Status:** Aceita
+
+Nesta primeira versão do HomeHub, o Refresh Token permanece válido durante todo o seu período de expiração.
+
+A renovação da sessão gera apenas um novo Access Token.
+
+A rotação do Refresh Token foi adiada para reduzir a complexidade inicial da implementação, podendo ser incorporada em versões futuras sem alterar o contrato principal da API.
+
+
+
 ---
 
 ## 15. Histórico de features
@@ -758,13 +777,33 @@ Adicionar sessões renováveis ao fluxo de autenticação.
 
 #### Pendências
 
-- endpoint `/api/auth/refresh`;
-- validação de token expirado ou revogado;
-- rotação;
 - logout;
-- revogação;
+- revogação de sessões;
 - limpeza de tokens expirados;
+- estratégia de rotação;
 - testes automatizados específicos.
+
+#### Evolução
+
+Foi implementado o endpoint:
+
+```text
+POST /api/auth/refresh
+```
+
+A renovação da sessão utiliza o Refresh Token persistido para:
+
+- localizar a sessão;
+- validar existência;
+- validar revogação;
+- validar expiração;
+- recuperar o usuário;
+- validar o estado do usuário;
+- gerar um novo Access Token.
+
+Nesta versão o Refresh Token permanece reutilizável durante toda sua validade.
+
+A estratégia de rotação foi deliberadamente adiada para uma evolução futura.
 
 #### Impacto arquitetural
 
@@ -776,11 +815,11 @@ O login passou a coordenar a geração de Access Token e a criação de uma sess
 
 ### Prioridade imediata
 
-1. Implementar consulta de Refresh Token por valor.
-2. Implementar validação de expiração e revogação.
-3. Criar `POST /api/auth/refresh`.
+1. Implementar logout.
+2. Revogar sessões.
+3. Limpeza automática de Refresh Tokens expirados.
 4. Adicionar testes unitários e de integração.
-5. Definir estratégia de rotação.
+5. Definir estratégia definitiva de rotação.
 
 ### Próxima etapa
 
