@@ -1,11 +1,11 @@
 info:
-  name: Refresh Access Token HomeHub
+  name: Logout HomeHub
   type: http
-  seq: 4
+  seq: 5
 
 http:
   method: POST
-  url: http://localhost:8080/api/auth/refresh
+  url: http://localhost:8080/api/auth/logout
   body:
     type: json
     data: |-

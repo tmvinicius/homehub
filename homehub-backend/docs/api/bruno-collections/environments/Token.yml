@@ -1,0 +1,8 @@
+name: Token
+variables:
+  - name: JWT
+    value: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBob21laHViLmNvbSIsImlkIjoiZGVmNWUyOGItNzY5Mi00YmZiLWE2MWEtYjBhMjcwYmE3NTkxIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzg1ODk1NzcwLCJleHAiOjE3ODU5ODIxNzB9.Q4kLFsES2FqCOXLZ61iqmJ8HO-j9xPSQ2MyXpvxLeok
+    description: ""
+  - name: RefreshTk
+    value: 2JkML5dBSQlLZPGYvbaHh2jpeGssKfj1lG69aM_X_Po
+    description: ""
