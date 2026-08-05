@@ -32,7 +32,7 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         // 🔓 públicas
-                        .requestMatchers("/api/auth/login", "/api/auth/register","/api/auth/verify", "/api/auth/refresh").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/register","/api/auth/verify", "/api/auth/refresh", "/api/auth/logout").permitAll()
                         .requestMatchers("/error").permitAll()
 
                         // 🔐 ADMIN
