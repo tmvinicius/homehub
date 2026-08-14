@@ -14,19 +14,19 @@ public class UserTest {
             new Password("AbC123@"));
 
     @Test
-    public void shouldCreateValidUser(){
+    void shouldCreateValidUser(){
         assertDoesNotThrow(() -> userAdmin);
 
     }
 
     @Test
-    public void shouldValidateUserWhenUserIsValid(){
+    void shouldValidateUserWhenUserIsValid(){
         assertDoesNotThrow(() -> userAdmin.validateUser());
 
     }
 
     @Test
-    public void shouldThrowInvalidUserExceptionWhenUserIsNotActive(){
+    void shouldThrowInvalidUserExceptionWhenUserIsNotActive(){
         User user = new User(
                 UUID.randomUUID(),
                 new Email("adm@tmvinicius.com"),
@@ -38,7 +38,7 @@ public class UserTest {
     }
 
     @Test
-    public void shouldThrowInvalidUserExceptionWhenUserRoleIsNotAdmin(){
+    void shouldThrowInvalidUserExceptionWhenUserRoleIsNotAdmin(){
         User user = new User(
                 UUID.randomUUID(),
                 new Email("adm@tmvinicius.com"),
@@ -50,7 +50,7 @@ public class UserTest {
     }
 
     @Test
-    public void shouldSetActiveUserWhenUserRoleIsAdmin(){
+    void shouldSetActiveUserWhenUserRoleIsAdmin(){
         User admin = new User(
                 UUID.randomUUID(),
                 new Email("adm@tmvinicius.com"),

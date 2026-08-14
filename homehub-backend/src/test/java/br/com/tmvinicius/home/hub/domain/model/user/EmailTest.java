@@ -9,24 +9,24 @@ public class EmailTest  {
 
 
     @Test
-    public void shouldCreateValidEmail(){
+    void shouldCreateValidEmail(){
         assertDoesNotThrow(() -> new Email("adm@tmvinicius.com"));
     }
 
     @Test
-    public void shouldThrowInvalidEmailExceptionWhenEmailIsInvalid(){
+    void shouldThrowInvalidEmailExceptionWhenEmailIsInvalid(){
         assertThrows(InvalidEmailException.class,
                 () -> new Email("test@;//"));
     }
 
     @Test
-    public void shouldThrowNullPointerExceptionWhenEmailIsNull(){
+    void shouldThrowNullPointerExceptionWhenEmailIsNull(){
         assertThrows(NullPointerException.class,
                 () -> new Email(null));
     }
 
     @Test
-    public void shouldThrowInvalidEmailExceptionWhenEmailIsVoid(){
+    void shouldThrowInvalidEmailExceptionWhenEmailIsVoid(){
         assertThrows(InvalidEmailException.class,
                 () -> new Email(""));
     }

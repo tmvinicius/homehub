@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 public class RefreshTokenTest {
 
     @Test
-    public void shouldCreateValidToken(){
+    void shouldCreateValidToken(){
         assertDoesNotThrow(() -> new RefreshToken(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
@@ -24,7 +24,7 @@ public class RefreshTokenTest {
     }
 
     @Test
-    public void shouldThrowRefreshTokenRevokedExceptionWhenTokenIsRevoked(){
+    void shouldThrowRefreshTokenRevokedExceptionWhenTokenIsRevoked(){
         RefreshToken token = new RefreshToken(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
@@ -37,7 +37,7 @@ public class RefreshTokenTest {
     }
 
     @Test
-    public void shouldThrowRefreshTokenExpiredExceptionWhenTokenIsExpired(){
+    void shouldThrowRefreshTokenExpiredExceptionWhenTokenIsExpired(){
         RefreshToken token = new RefreshToken(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
@@ -50,7 +50,7 @@ public class RefreshTokenTest {
     }
 
     @Test
-    public void shouldRevokeRefreshToken() {
+    void shouldRevokeRefreshToken() {
         RefreshToken token = new RefreshToken(
                 UUID.randomUUID(),
                 UUID.randomUUID(),
