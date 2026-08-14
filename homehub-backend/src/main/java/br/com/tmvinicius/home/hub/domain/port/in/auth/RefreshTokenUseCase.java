@@ -10,4 +10,6 @@ public interface RefreshTokenUseCase {
 
     String refreshAccessToken(String token);
 
+    void revokeToken(String token);
+
 }

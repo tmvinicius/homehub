@@ -9,6 +9,7 @@ import br.com.tmvinicius.home.hub.domain.port.in.auth.LoginUseCase;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.RefreshTokenUseCase;
 import br.com.tmvinicius.home.hub.domain.port.in.auth.VerifyTokenUseCase;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.request.auth.RefreshAccessTokenRequest;
+import br.com.tmvinicius.home.hub.infrastructure.web.dto.request.auth.RevokeRefreshTokenRequest;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.request.user.UserLoginRequest;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.auth.RefreshAccessTokenResponse;
 import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.user.MeResponse;
@@ -78,6 +79,14 @@ public class AuthenticationController {
         String newAccessToken = refreshTokenUseCase.refreshAccessToken(tokenRequest.token());
 
         return ResponseEntity.ok(new RefreshAccessTokenResponse(newAccessToken));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<Void> logout(@RequestBody RevokeRefreshTokenRequest tokenRequest){
+
+        refreshTokenUseCase.revokeToken(tokenRequest.token());
+
+        return ResponseEntity.noContent().build();
     }
 
 }

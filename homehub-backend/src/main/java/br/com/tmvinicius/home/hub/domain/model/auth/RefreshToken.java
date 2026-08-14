@@ -1,5 +1,8 @@
 package br.com.tmvinicius.home.hub.domain.model.auth;
 
+import br.com.tmvinicius.home.hub.domain.exception.auth.RefreshTokenExpiredException;
+import br.com.tmvinicius.home.hub.domain.exception.auth.RefreshTokenRevokedException;
+
 import java.time.Instant;
 import java.util.UUID;
 
@@ -40,16 +43,23 @@ public class RefreshToken {
         return expiresAt.isBefore(Instant.now());
     }
 
-    public void setRevoked(Boolean revoked) {
-        this.revoked = revoked;
+    public void revoke() {
+        this.revoked = true;
     }
 
     public boolean isRevoked() {
         return revoked;
     }
 
-    public boolean isValid() {
-        return !isExpired() && !isRevoked();
+    public void validateRefreshToken() {
+
+        if(isRevoked()){
+            throw new RefreshTokenRevokedException("O token não está mais diponível");
+        }
+
+        if (isExpired()){
+            throw new RefreshTokenExpiredException("O token expirou");
+        }
     }
 
 }

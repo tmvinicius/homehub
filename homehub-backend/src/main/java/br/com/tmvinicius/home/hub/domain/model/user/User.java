@@ -40,16 +40,8 @@ public class User {
         return email;
     }
 
-    public void setEmail(Email email){
-        this.email = email;
-    }
-
     public Password getPassword(){
         return this.password;
-    }
-
-    public void setPassword(Password password){
-        this.password = password;
     }
 
     public Boolean getActive() {

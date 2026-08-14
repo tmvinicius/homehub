@@ -46,13 +46,7 @@ public class RefreshTokenUseCaseImpl implements RefreshTokenUseCase {
         RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
                 .orElseThrow(() -> new InvalidRefreshTokenException("Refresh Token inválido"));
 
-        if(refreshToken.isRevoked()){
-            throw new RefreshTokenRevokedException("O token não está mais diponível");
-        }
-
-        if (refreshToken.isExpired()){
-            throw new RefreshTokenExpiredException("O token expirou");
-        }
+        refreshToken.validateRefreshToken();
 
         User user = userRepository.findById(refreshToken.getUserId())
                 .orElseThrow(() -> new UserNotFoundException("Usuário não encontrado"));
@@ -61,5 +55,18 @@ public class RefreshTokenUseCaseImpl implements RefreshTokenUseCase {
 
         return tokenProvider.generate(user);
     }
+
+    @Override
+    public void revokeToken(String token) {
+        RefreshToken refreshToken = refreshTokenRepository.findByToken(token)
+                .orElseThrow(() ->
+                        new InvalidRefreshTokenException("Refresh Token inválido"));
+
+        refreshToken.validateRefreshToken();
+
+        refreshToken.revoke();
+        refreshTokenRepository.save(refreshToken);
+    }
+
 
 }
