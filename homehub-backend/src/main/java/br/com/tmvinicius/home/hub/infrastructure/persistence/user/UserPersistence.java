@@ -27,7 +27,7 @@ public class UserPersistence {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false )
+    @Column(nullable = false, columnDefinition = "varchar(20)")
     private UserRole userRole;
 
     @Column(nullable = false)

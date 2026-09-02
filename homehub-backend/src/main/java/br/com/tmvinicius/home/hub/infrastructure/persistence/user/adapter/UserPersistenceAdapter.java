@@ -28,7 +28,7 @@
 
         @Override
         public Optional<User> findById(UUID id) {
-            return Optional.of(userJpaRepository.findById(id).get())
+            return userJpaRepository.findById(id)
                     .map(userPersistenceMapper::entityToDomain);
         }
     }
