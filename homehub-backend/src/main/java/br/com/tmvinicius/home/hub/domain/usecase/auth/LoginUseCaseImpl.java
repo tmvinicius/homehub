@@ -11,7 +11,6 @@ import br.com.tmvinicius.home.hub.domain.port.in.auth.RefreshTokenUseCase;
 import br.com.tmvinicius.home.hub.domain.port.out.auth.PasswordEncoder;
 import br.com.tmvinicius.home.hub.domain.port.out.auth.TokenProvider;
 import br.com.tmvinicius.home.hub.domain.port.out.user.UserRepository;
-import br.com.tmvinicius.home.hub.infrastructure.web.dto.response.user.UserLoginResponse;
 
 public class LoginUseCaseImpl implements LoginUseCase {
 
