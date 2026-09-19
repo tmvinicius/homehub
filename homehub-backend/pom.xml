@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<jacoco.argLine></jacoco.argLine>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -132,14 +133,39 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.5.3</version>
+				<configuration>
+					<argLine>
+						@{jacoco.argLine}
+						-javaagent:${settings.localRepository}/org/mockito/mockito-core/${mockito.version}/mockito-core-${mockito.version}.jar
+					</argLine>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.8.11</version>
+				<configuration>
+					<propertyName>jacoco.argLine</propertyName>
+					<excludes>
+						<!-- DTOs, records e entidades JPA: sem lógica própria -->
+						<exclude>br/com/tmvinicius/home/hub/infrastructure/web/dto/**/*</exclude>
+						<exclude>br/com/tmvinicius/home/hub/infrastructure/persistence/**/*Persistence.class</exclude>
+						<exclude>br/com/tmvinicius/home/hub/Application.class</exclude>
+					</excludes>
+				</configuration>
 				<executions>
 					<execution>
+						<id>prepare-agent</id>
 						<goals>
-							<goal>prepare-agent</goal>
-							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
 						</goals>
 					</execution>
 				</executions>
